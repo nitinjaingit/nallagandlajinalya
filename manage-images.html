@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="description" content="Manage local temple website photos." />
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><text y='50' font-size='48'>ॐ</text></svg>" />
+	<title>Manage Photos | Shree Digambar Jinalaya, Nallagandla, Hyderabad</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Hind:wght@400;500;600&display=swap" rel="stylesheet" />
+	<link rel="stylesheet" href="styles.css" />
+	<script>
+		(() => {
+			const param = new URLSearchParams(window.location.search).get("scoutTheme");
+			document.documentElement.dataset.theme = param || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+		})();
+	</script>
+</head>
+<body class="inner-page">
+	<header class="site-header">
+		<div class="header-inner">
+			<a class="brand" href="index.html">
+				<span class="brand-mark">ॐ</span>
+				<span>
+					<strong data-temple-name></strong>
+					<small>Photo manager</small>
+				</span>
+			</a>
+			<nav>
+				<a href="gallery.html">View gallery</a>
+				<a href="index.html">Home</a>
+			</nav>
+		</div>
+	</header>
+
+	<main class="manager-shell">
+		<div class="manager-intro">
+			<p class="eyebrow">File-based administration</p>
+			<h1>Manage photos</h1>
+			<p>Select your temple photographs, add captions, choose the main home-page photo, and select which photos rotate on the home page. Every photo remains available in the full gallery.</p>
+			<p class="manager-note">
+				<strong>No photos are uploaded to a server.</strong>
+				Processing happens in this browser. Use “Save website file” and choose the existing
+				<code>image-data.js</code> in this website folder to publish your changes.
+			</p>
+		</div>
+
+		<label class="upload-zone" id="upload-zone">
+			<input id="photo-input" type="file" accept="image/jpeg,image/png,image/webp" multiple />
+			<span>
+				<strong>Choose temple photos</strong>
+				JPG, PNG, or WebP · multiple files allowed
+			</span>
+		</label>
+
+		<div class="manager-actions">
+			<button class="button button-primary" id="save-button" type="button">Save website file</button>
+			<button class="button button-secondary" id="preview-button" type="button">Preview gallery</button>
+			<button class="button button-danger" id="clear-button" type="button">Clear photos</button>
+		</div>
+		<p class="status-message" id="status" role="status"></p>
+		<div class="manager-grid" id="manager-grid"></div>
+	</main>
+
+	<script src="content.js"></script>
+	<script src="shared-layout.js"></script>
+	<script src="image-data.js"></script>
+	<script src="manager.js"></script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="description" content="Learn about our Jain temple and values." />
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><text y='50' font-size='48'>ॐ</text></svg>" />
+	<title>About | Shree Digambar Jinalaya, Nallagandla, Hyderabad</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Hind:wght@400;500;600&display=swap" rel="stylesheet" />
+	<link rel="stylesheet" href="styles.css" />
+	<script>
+		(() => {
+			const param = new URLSearchParams(window.location.search).get("scoutTheme");
+			document.documentElement.dataset.theme = param || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+		})();
+	</script>
+</head>
+<body class="inner-page">
+	<a class="skip-link" href="#main-content">Skip to content</a>
+
+	<header class="site-header" id="top">
+		<div class="header-inner">
+			<a class="brand" href="index.html">
+				<span class="brand-mark">ॐ</span>
+				<span>
+					<strong data-temple-name></strong>
+					<small>Nallagandla, Hyderabad</small>
+				</span>
+			</a>
+			<button class="menu-button" aria-expanded="false" aria-controls="primary-nav">
+				<span class="menu-icon"></span>
+				<span class="sr-only">Open navigation</span>
+			</button>
+			<nav id="primary-nav">
+				<a href="events.html">Events</a>
+				<a class="active" href="about.html">About</a>
+				<a href="gallery.html">Gallery</a>
+				<a href="visit.html">Visit</a>
+				<a href="contact.html">Contact</a>
+				<a class="nav-donate" href="donate.html">Donate</a>
+			</nav>
+		</div>
+	</header>
+
+	<main id="main-content">
+		<header class="page-masthead">
+			<div>
+				<p class="eyebrow">Our mandir</p>
+				<h1>About us</h1>
+				<p>A place for darshan, learning, and community.</p>
+			</div>
+		</header>
+
+		<section class="about-band">
+			<div class="about-inner">
+				<div class="about-copy reveal">
+					<p class="eyebrow">Our story</p>
+					<h2>Rooted in timeless Jain principles</h2>
+					<p id="about-text"></p>
+				</div>
+				<dl class="values-list reveal">
+					<div>
+						<dt>Ahimsa</dt>
+						<dd>Compassion in thought, word, and action</dd>
+					</div>
+					<div>
+						<dt>Anekant</dt>
+						<dd>Respect for many points of view</dd>
+					</div>
+					<div>
+						<dt>Aparigraha</dt>
+						<dd>Living with simplicity and restraint</dd>
+					</div>
+				</dl>
+			</div>
+		</section>
+
+		<section class="section">
+			<div class="section-heading reveal">
+				<div>
+					<p class="eyebrow">Community life</p>
+					<h2>Worship, learning, and service</h2>
+				</div>
+			</div>
+			<div class="link-grid reveal">
+				<div>
+					<span>01</span>
+					<h3>Daily worship</h3>
+					<p>Darshan, puja, aarti, and spiritual reflection.</p>
+				</div>
+				<div>
+					<span>02</span>
+					<h3>Pathshala</h3>
+					<p>Jain learning for children, youth, and families.</p>
+				</div>
+				<div>
+					<span>03</span>
+					<h3>Community seva</h3>
+					<p>Shared action guided by compassion and care.</p>
+				</div>
+			</div>
+		</section>
+	</main>
+	<script src="content.js"></script>
+	<script src="shared-layout.js"></script>
+	<script src="image-data.js"></script>
+	<script src="app.js"></script>
+</body>
+</html>

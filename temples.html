@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="description" content="A directory of Jain temples, jinalayas, sthanaks, and Jain community centres in Hyderabad and within approximately 200 km." />
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><text y='50' font-size='48'>ॐ</text></svg>" />
+	<title>Jain Temples Within 200 km of Hyderabad | Shree Digambar Jinalaya</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Hind:wght@400;500;600&display=swap" rel="stylesheet" />
+	<link rel="stylesheet" href="styles.css" />
+	<script>
+		(() => {
+			const param = new URLSearchParams(window.location.search).get("scoutTheme");
+			document.documentElement.dataset.theme = param || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+		})();
+	</script>
+</head>
+<body class="inner-page">
+	<a class="skip-link" href="#main-content">Skip to content</a>
+
+	<main id="main-content">
+		<header class="page-masthead temple-directory-masthead">
+			<div>
+				<p class="eyebrow">Community directory</p>
+				<h1>Jain temples in and around Hyderabad</h1>
+				<p>Find Jain mandirs, jinalayas and community centres around Hyderabad.</p>
+			</div>
+		</header>
+
+		<section class="section temple-directory-section" aria-labelledby="directory-heading">
+			<div class="directory-toolbar">
+				<div>
+					<h2 id="directory-heading">Temple directory</h2>
+					<p id="temple-count" aria-live="polite"></p>
+				</div>
+				<label class="directory-search">
+					<span>Search by temple or locality</span>
+					<input id="temple-search" type="search" placeholder="e.g. Ameerpet, Bidar or Parshvnath" autocomplete="off" />
+				</label>
+			</div>
+			<div class="temple-directory-grid" id="temple-directory"></div>
+			<p class="directory-empty" id="directory-empty" hidden>No temples match your search.</p>
+			<p class="directory-note">Directory information was compiled from public Jain community listings in September 2026. Please confirm contact details and opening hours before travelling.</p>
+		</section>
+	</main>
+
+	<script src="content.js"></script>
+	<script src="shared-layout.js"></script>
+	<script src="temples.js"></script>
+	<script src="app.js"></script>
+</body>
+</html>

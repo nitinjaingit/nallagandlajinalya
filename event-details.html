@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="description" content="Temple event details and photos." />
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><text y='50' font-size='48'>ॐ</text></svg>" />
+	<title>Event details | Shree Digambar Jinalaya</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Hind:wght@400;500;600&display=swap" rel="stylesheet" />
+	<link rel="stylesheet" href="styles.css" />
+	<script>
+		(() => {
+			const param = new URLSearchParams(window.location.search).get("scoutTheme");
+			document.documentElement.dataset.theme = param || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+		})();
+	</script>
+</head>
+<body class="inner-page">
+	<a class="skip-link" href="#main-content">Skip to content</a>
+	<header class="site-header" id="top"></header>
+
+	<main id="main-content">
+		<header class="page-masthead event-detail-masthead">
+			<div>
+				<a class="text-link event-back-link" href="events.html">Back to events</a>
+				<h1 id="event-detail-title">Event not found</h1>
+				<p id="event-detail-description">The requested event could not be found.</p>
+			</div>
+		</header>
+
+		<section class="section event-detail-section" id="event-detail-content" hidden>
+			<div class="event-detail-actions" id="event-detail-actions">
+				<a class="button button-primary" id="event-calendar-link" download>Add to calendar</a>
+				<a class="button button-primary" id="event-share-link" target="_blank" rel="noreferrer">Share on WhatsApp</a>
+				<a class="button button-secondary" id="event-directions-link" target="_blank" rel="noreferrer">Get directions</a>
+			</div>
+			<div class="event-detail-layout">
+				<div>
+					<h2>Event information</h2>
+					<dl class="event-facts" id="event-detail-facts"></dl>
+				</div>
+				<div>
+					<h2>Program details</h2>
+					<ul class="event-program" id="event-detail-program"></ul>
+				</div>
+			</div>
+
+			<div class="event-gallery-heading">
+				<h2>Event photos</h2>
+				<p id="event-photo-note"></p>
+			</div>
+			<div class="gallery-grid event-image-grid" id="event-image-grid"></div>
+		</section>
+
+		<dialog class="event-photo-dialog" id="event-detail-dialog" aria-labelledby="event-dialog-title">
+			<button class="dialog-close" type="button" aria-label="Close event photo">×</button>
+			<div class="event-photo-viewer">
+				<img src="" alt="" />
+				<div class="event-photo-copy">
+					<h2 id="event-dialog-title"></h2>
+					<p></p>
+					<div class="event-photo-actions">
+						<button class="event-photo-previous" type="button" aria-label="Previous photo">‹</button>
+						<span class="event-photo-count" aria-live="polite"></span>
+						<button class="event-photo-next" type="button" aria-label="Next photo">›</button>
+					</div>
+				</div>
+			</div>
+		</dialog>
+	</main>
+
+	<script src="content.js"></script>
+	<script src="shared-layout.js?v=2"></script>
+	<script src="event-details.js"></script>
+</body>
+</html>
