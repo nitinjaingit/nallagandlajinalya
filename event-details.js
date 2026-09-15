@@ -16,9 +16,46 @@ if (selectedEvent) {
     ? `${formatDate(selectedEvent.date)} to ${formatDate(selectedEvent.endDate)}`
     : formatDate(selectedEvent.date);
   const description = selectedEvent.description || selectedEvent.note || "";
-  const images = Array.isArray(selectedEvent.images) ? selectedEvent.images : [];
+  const images = window.getEventImages(selectedEvent);
+  const canonicalUrl = `https://njj.org/event-details.html?id=${encodeURIComponent(selectedEvent.id)}`;
+  const imageUrl = images[0]?.src
+    ? new URL(images[0].src, "https://njj.org/").href
+    : "https://njj.org/assets/images/Home/Vedi-transparent-clean.png?v=3";
 
   document.title = `${selectedEvent.title} | ${content.temple.name}`;
+  document.querySelector('meta[name="description"]').content = description || `${selectedEvent.title} at ${content.temple.name}.`;
+  document.getElementById("event-canonical").href = canonicalUrl;
+  document.getElementById("event-og-title").content = `${selectedEvent.title} | ${content.temple.name}`;
+  document.getElementById("event-og-description").content = description || `${selectedEvent.title} at ${content.temple.name}.`;
+  document.getElementById("event-og-url").content = canonicalUrl;
+  document.getElementById("event-og-image").content = imageUrl;
+
+  const eventStructuredData = document.createElement("script");
+  eventStructuredData.type = "application/ld+json";
+  eventStructuredData.textContent = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Event",
+    name: selectedEvent.title,
+    description,
+    startDate: selectedEvent.date,
+    endDate: selectedEvent.endDate || selectedEvent.date,
+    eventStatus: `https://schema.org/${isHistoricalEvent ? "EventCompleted" : "EventScheduled"}`,
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    image: images.map((image) => new URL(image.src, "https://njj.org/").href),
+    url: canonicalUrl,
+    location: {
+      "@type": "Place",
+      name: selectedEvent.location || content.temple.name,
+      address: content.temple.address
+    },
+    organizer: {
+      "@type": "Organization",
+      name: content.temple.name,
+      url: "https://njj.org/"
+    }
+  });
+  document.head.append(eventStructuredData);
+
   document.getElementById("event-detail-title").textContent = selectedEvent.title;
   document.getElementById("event-detail-description").textContent = description;
   document.getElementById("event-detail-content").hidden = false;

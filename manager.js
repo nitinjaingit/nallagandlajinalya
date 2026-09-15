@@ -127,7 +127,7 @@ document.getElementById("save-button").addEventListener("click", async () => {
   const blob = new Blob([generatedFile()], { type: "text/javascript" });
   try {
     if (window.showSaveFilePicker) {
-      const handle = await window.showSaveFilePicker({ suggestedName: "image-data.js", types: [{ description: "JavaScript file", accept: { "text/javascript": [".js"] } }] });
+      const handle = await window.showSaveFilePicker({ suggestedName: "gallery-data.js", types: [{ description: "JavaScript file", accept: { "text/javascript": [".js"] } }] });
       const writable = await handle.createWritable();
       await writable.write(blob);
       await writable.close();
@@ -135,10 +135,10 @@ document.getElementById("save-button").addEventListener("click", async () => {
     } else {
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      link.download = "image-data.js";
+      link.download = "gallery-data.js";
       link.click();
       URL.revokeObjectURL(link.href);
-      status.textContent = "image-data.js downloaded. Replace the file with that name in your website folder.";
+      status.textContent = "gallery-data.js downloaded. Replace the file with that name in your website folder.";
     }
   } catch (error) {
     if (error.name !== "AbortError") status.textContent = `Could not save: ${error.message}`;

@@ -53,7 +53,7 @@
   header.innerHTML = `
     <div class="header-inner">
       <a class="brand" href="index.html" aria-label="Temple home">
-        <span class="brand-mark" aria-hidden="true">卐</span>
+        <img class="brand-mark" src="assets/images/Home/Logo.png" alt="" aria-hidden="true">
         <span>
           <strong>${templeName}</strong>
           <small>${locationName}</small>
@@ -70,7 +70,12 @@
   if (existingHeader) {
     existingHeader.replaceWith(header);
   } else {
-    document.body.prepend(header);
+    const skipLink = document.querySelector(".skip-link");
+    if (skipLink) {
+      skipLink.insertAdjacentElement("afterend", header);
+    } else {
+      document.body.prepend(header);
+    }
   }
 
   const menuButton = header.querySelector(".menu-button");
@@ -91,7 +96,7 @@
   footer.innerHTML = `
     <div class="footer-inner">
       <div class="brand footer-brand">
-        <span class="brand-mark" aria-hidden="true">卐</span>
+        <img class="brand-mark" src="assets/images/Home/Logo.png" alt="" aria-hidden="true">
         <span>
           <strong>${templeName}</strong>
           <small>${locationName}</small>
@@ -127,4 +132,31 @@
     <a href="${temple?.directionsUrl || "visit.html"}" target="_blank" rel="noreferrer">Directions</a>
     <a href="https://wa.me/${primaryPhone}" target="_blank" rel="noreferrer">WhatsApp</a>`;
   document.body.append(quickActions);
+
+  const initializeAssistant = () => {
+    const loadAssistant = () => {
+      if (document.querySelector("#site-assistant-script")) return;
+      const assistantScript = document.createElement("script");
+      assistantScript.id = "site-assistant-script";
+      assistantScript.src = "site-assistant.js?v=6";
+      document.body.append(assistantScript);
+    };
+
+    if (!document.querySelector("#site-assistant-sources")) {
+      const sourcesScript = document.createElement("script");
+      sourcesScript.id = "site-assistant-sources";
+      sourcesScript.src = "bot-sources.js?v=2";
+      sourcesScript.addEventListener("load", loadAssistant);
+      sourcesScript.addEventListener("error", loadAssistant);
+      document.body.append(sourcesScript);
+    } else {
+      loadAssistant();
+    }
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializeAssistant, { once: true });
+  } else {
+    initializeAssistant();
+  }
 })();

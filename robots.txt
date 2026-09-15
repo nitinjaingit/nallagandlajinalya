@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /manage-images.html
+
+Sitemap: https://njj.org/sitemap.xml

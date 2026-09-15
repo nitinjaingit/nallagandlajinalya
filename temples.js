@@ -1,4 +1,4 @@
-const regionalTemples = [
+var regionalTemples = window.REGIONAL_TEMPLES = [
   {
     name: "Shree Digambar Jinalaya",
     tradition: "Digambar",
@@ -31,6 +31,8 @@ const searchInput = document.querySelector("#temple-search");
 const count = document.querySelector("#temple-count");
 const emptyState = document.querySelector("#directory-empty");
 const fallbackTempleImage = "https://placehold.co/800x450/CFB290/1a1a1a?text=Jain+Temple";
+
+if (directory && searchInput && count && emptyState) {
 
 const createMapUrl = (temple) => temple.map || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${temple.name}, ${temple.address}`)}`;
 
@@ -68,7 +70,7 @@ function renderTemples(temples) {
           <strong>Contact</strong>
           <span>${phone}</span>
         </address>
-        <img class="temple-card-image" alt="${temple.name}" loading="lazy" width="180" height="101">
+        <img class="temple-card-image" alt="${temple.name}" loading="lazy">
       </div>
       <div class="temple-card-actions">
         <a class="button button-primary" href="${createMapUrl(temple)}" target="_blank" rel="noopener noreferrer">Location</a>
@@ -91,3 +93,4 @@ searchInput.addEventListener("input", () => {
 });
 
 renderTemples(regionalTemples);
+}

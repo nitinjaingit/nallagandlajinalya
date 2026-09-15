@@ -27,6 +27,7 @@ setText("hero-welcome", temple.welcome);
 setText("home-gallery-title", "Life at the Jinalaya");
 setText("about-text", temple.about);
 setText("opening-time", temple.openingTime);
+setText("parkshal-time", temple.parkshalTime);
 setText("aarti-time", temple.aartiTime);
 setText("swadhaya-time", temple.swadhayaTime);
 setText("morning-hours", temple.morningHours);
@@ -77,19 +78,6 @@ if (payment) {
   setText("payment-account-number", payment.accountNumber);
   setText("payment-ifsc", payment.ifscCode);
   setText("payment-branch", payment.branch);
-  setText("payment-upi-id", payment.upiId);
-
-  const upiQr = byId("upi-qr");
-  if (upiQr) {
-    upiQr.innerHTML = payment.upiQrImage
-      ? `<img src="${payment.upiQrImage}" alt="UPI payment QR code">`
-      : "<p>Add the UPI QR image path in content.js.</p>";
-  }
-
-  const upiPayLink = byId("upi-pay-link");
-  if (upiPayLink) {
-    upiPayLink.href = `upi://pay?pa=${encodeURIComponent(payment.upiId)}&pn=${encodeURIComponent(payment.accountName)}&cu=INR`;
-  }
 }
 
 document.querySelectorAll("[data-copy-target]").forEach((button) => {
@@ -139,18 +127,79 @@ const escapeHtml = (value) => String(value || "").replace(/[&<>"']/g, (character
   "'": "&#39;"
 })[character]);
 
-const cleanAnnouncementLine = (line) => line.replace(/\*/g, "").replace(/^\s*[✨🔸]\s*/u, "").trim();
+const todayDarpanList = byId("today-darpan-list");
+if (todayDarpanList && window.JAIN_FESTIVAL_DARPAN) {
+  const hyderabadDateParts = Object.fromEntries(new Intl.DateTimeFormat("en", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    timeZone: "Asia/Kolkata"
+  }).formatToParts(now).map(({ type, value }) => [type, value]));
+  const localDate = `${hyderabadDateParts.year}-${hyderabadDateParts.month}-${hyderabadDateParts.day}`;
+  const darpanEntries = [
+    ...window.JAIN_FESTIVAL_DARPAN.tirthankarDarpan.map((entry) => ({ ...entry, type: "तीर्थंकर" })),
+    ...window.JAIN_FESTIVAL_DARPAN.acharyaDarpan.map((entry) => ({ ...entry, type: "आचार्य" }))
+  ].filter((entry) => entry.date === localDate);
+  const todayDarpanDate = byId("today-darpan-date");
+  if (todayDarpanDate) {
+    todayDarpanDate.dateTime = localDate;
+    todayDarpanDate.textContent = new Intl.DateTimeFormat("en-IN", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      timeZone: "Asia/Kolkata"
+    }).format(now);
+  }
+  todayDarpanList.innerHTML = darpanEntries.length
+    ? darpanEntries.map((entry) => `<article><span>${entry.type} दर्पण</span><strong>${escapeHtml(entry.poojniya)}</strong><small>${escapeHtml(entry.divas)}</small></article>`).join("")
+    : "<p>No Darpan observance listed for today.</p>";
+}
+
+const formatAnnouncementLine = ({ icon = "", text = "" }) => `<span class="announcement-line">
+  ${icon ? `<span class="announcement-icon" aria-hidden="true">${escapeHtml(icon)}</span>` : ""}<span>${escapeHtml(text)}</span>
+</span>`;
+const formatAnnouncementDate = (value) => {
+  const match = String(value || "").match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  return match ? `${match[3]}-${match[2]}-${match[1].slice(-2)}` : value;
+};
+const formatAnnouncementWeekday = (value) => {
+  const match = String(value || "").match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!match) return "";
+  const date = new Date(Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3])));
+  return new Intl.DateTimeFormat("hi-IN", { weekday: "long", timeZone: "UTC" }).format(date);
+};
+const formatAnnouncementSchedule = (announcement) => {
+  if (announcement.date) {
+    return `${formatAnnouncementDate(announcement.date)} (${formatAnnouncementWeekday(announcement.date)})`;
+  }
+  if (announcement.recurring?.frequency === "weekly") return `Every ${announcement.recurring.day}`;
+  if (announcement.startDate && announcement.endDate) {
+    return `${formatAnnouncementDate(announcement.startDate)} to ${formatAnnouncementDate(announcement.endDate)}`;
+  }
+  return "Regular program";
+};
 const announcementList = byId("announcement-list");
 if (announcementList) {
-  announcementList.innerHTML = content.announcements.map((announcement, index) => {
-    const lines = String(announcement).split(/\r?\n/).map(cleanAnnouncementLine).filter(Boolean);
-    const hasDate = /^\d{1,2}[-/]\d{1,2}[-/]\d{2,4}/.test(lines[0] || "");
-    const date = hasDate ? lines.shift() : "Regular program";
-    const title = lines.shift() || date;
-    const details = lines.length ? `<p>${escapeHtml(lines.join(" · "))}</p>` : "";
+  const hyderabadDateParts = Object.fromEntries(new Intl.DateTimeFormat("en", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    timeZone: "Asia/Kolkata"
+  }).formatToParts(now).map(({ type, value }) => [type, value]));
+  const currentDate = `${hyderabadDateParts.year}-${hyderabadDateParts.month}-${hyderabadDateParts.day}`;
+  const currentAnnouncements = content.announcements.filter((announcement) => {
+    const effectiveEndDate = announcement.endDate || announcement.date || announcement.startDate;
+    return !/^\d{4}-\d{2}-\d{2}$/.test(effectiveEndDate || "") || effectiveEndDate >= currentDate;
+  });
+
+  announcementList.innerHTML = currentAnnouncements.map((announcement, index) => {
+    const schedule = formatAnnouncementSchedule(announcement);
+    const details = announcement.activities.length
+      ? `<div class="announcement-activities">${announcement.activities.map(formatAnnouncementLine).join("")}</div>`
+      : "";
     return `<article class="announcement-item${index >= 4 ? " announcement-extra" : ""}">
-      <p class="announcement-date">${escapeHtml(date)}</p>
-      <div><h3>${escapeHtml(title)}</h3>${details}</div>
+      <p class="announcement-date"><span>${escapeHtml(schedule)}</span>${announcement.time ? `<span class="announcement-time">${escapeHtml(announcement.time)}</span>` : ""}</p>
+      <div><h3>${formatAnnouncementLine(announcement.title)}</h3>${details}</div>
     </article>`;
   }).join("");
 
@@ -174,6 +223,11 @@ const allGalleryImages = previewData?.gallery?.length
 const homeSlideshow = byId("home-slideshow");
 if (homeSlideshow) {
   const activeImages = allGalleryImages.filter((image) => image.active);
+  for (let index = activeImages.length - 1; index > 0; index -= 1) {
+    const randomIndex = Math.floor(Math.random() * (index + 1));
+    [activeImages[index], activeImages[randomIndex]] = [activeImages[randomIndex], activeImages[index]];
+  }
+  activeImages.splice(10);
   if (!activeImages.length) {
     homeSlideshow.innerHTML = '<div class="empty-state">No photos are selected for the home-page rotation.</div>';
   } else {
@@ -317,7 +371,7 @@ if (eventGrid) {
       : String(event.details || "More information coming soon.").split(/\r?\n/)
     ).filter(Boolean);
     const eventDetails = detailLines.map((detail) => `<li>${detail}</li>`).join("");
-    const eventImages = Array.isArray(event.images) ? event.images : [];
+    const eventImages = window.getEventImages(event);
     const eventPhotos = eventImages.length ? `
       <button class="event-photo-trigger" type="button" data-event-index="${eventIndex}" aria-label="View photos from ${event.title}">
         <img src="${eventImages[0].src}" alt="" loading="lazy" />
@@ -342,7 +396,7 @@ if (eventGrid) {
     const next = eventPhotoDialog.querySelector(".event-photo-next");
 
     const showEventPhoto = (index) => {
-      const images = selectedEvent.images;
+      const images = window.getEventImages(selectedEvent);
       selectedPhotoIndex = (index + images.length) % images.length;
       const image = images[selectedPhotoIndex];
       photo.src = image.src;
@@ -396,6 +450,7 @@ if (gallery) {
     gallery.innerHTML = pageImages.length ? pageImages.map((image, index) => `
       <button class="gallery-item reveal is-visible" type="button" data-index="${firstImageIndex + index}" aria-label="Open ${image.caption}">
         <img src="${image.src}" alt="${image.alt}" loading="lazy" />
+        <span class="gallery-item-caption">${image.caption}</span>
       </button>`).join("") : '<div class="empty-state gallery-empty">No photos have been added yet. Use Manage photos to choose your temple images.</div>';
 
     if (pagination) pagination.hidden = pageCount <= 1;
