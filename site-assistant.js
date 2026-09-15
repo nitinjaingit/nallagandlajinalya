@@ -166,7 +166,7 @@
       compact([
         `${formatDate(event.date)}${event.endDate ? ` to ${formatDate(event.endDate)}` : ""}.`,
         event.time && `Time: ${event.time}.`,
-        event.location && `Location: ${event.location}.`,
+        event.address && `Address: ${event.address}.`,
         event.description,
         ...(event.details || [])
       ]),

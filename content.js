@@ -1,8 +1,8 @@
 // Edit this file to update the website. Dates use YYYY-MM-DD format.
 window.TEMPLE_CONTENT = {
   temple: {
-    name: "Shree Digambar Jinalaya",
-    fullName: "Shree Digambar Jinalaya, Nallagandla, Hyderabad",
+    name: "Shri Digambar Jinalaya",
+    fullName: "Shri Digambar Jinalaya, Nallagandla, Hyderabad",
     welcome: "A serene home for prayer, reflection, learning, and seva. Join us for daily darshan and community celebrations.",
     about: "Rooted in the timeless Jain principles of non-violence, truth, and compassion, our mandir brings generations together through worship, pathshala, festivals, and service. We welcome every visitor with warmth and respect.",
     heroImage: "assets/images/Home/Vedi-transparent-clean.png?v=3",
@@ -131,6 +131,22 @@ window.TEMPLE_CONTENT = {
   ],
   events: [
     {
+      id: "kshamavaani-program-2026",
+      imageBaseUrlEvent: "assets/images/Events",
+      date: "2026-10-04",
+      time: "9:00 AM",
+      title: "Kshamavaani Program",
+      description: "Community Kshamavaani Program",
+      address: "Aparna zenith club house, Nallagandla, Hyderabad - 500046",
+      mapUrl: "https://www.google.com/maps/search/?api=1&query=Aparna%20zenith%20club%20house%2C%20Nallagandla%2C%20Hyderabad%20-%20500046",
+      details: [
+        "Kshamavaani Program", "Lunch"
+      ],
+      images: {start: 1, end: 1}
+    }
+  ],
+  eventHistory: [
+    {
       id: "paryushan-parv-2026",
       imageBaseUrlEvent: "assets/images/Events",
       date: "2026-09-16",
@@ -138,7 +154,8 @@ window.TEMPLE_CONTENT = {
       time: "7:30 AM",
       title: "Paryushan Parv",
       description: "Paryushan Parv from 16th to 25th Sept 2026",
-      location: "Jinalaya",
+      address: "598, HUDA Layout, Nallagandla, DSR Park Ridge Lane, Near Nakshatra Apartments, Hyderabad - 500019",
+      mapUrl: "https://maps.app.goo.gl/ytVmadofco5y6Ap6A",
       details: [
         "7:30 AM | Nitya Abhishek ",
         "8:15 PM | Samuhik pooja and vidhan",
@@ -155,29 +172,12 @@ window.TEMPLE_CONTENT = {
       time: "7:45 AM",
       title: "Shobha Yatra",
       description: "Shobha Yatra",
-      location: "Jinalaya",
+      address: "598, HUDA Layout, Nallagandla, DSR Park Ridge Lane, Near Nakshatra Apartments, Hyderabad - 500019",
+      mapUrl: "https://maps.app.goo.gl/ytVmadofco5y6Ap6A",
       details: [
         "From Jinalaya"
       ],
-      images: {start: 1, end: 1}
+      images: {start:1 , end: 1 }
     }
-  ],
-  eventHistory: [
-    {
-      id: "mahavir-jayanti-2026",
-      imageBaseUrlEvent: "assets/images/Events",
-      date: "2026-04-10",
-      time: "",
-      title: "Mahavir Jayanti",
-      description: "Annual procession, cultural program, and community lunch.",
-      location: "Jinalaya",
-      details: [
-        "Annual procession",
-        "Cultural program",
-        "Community lunch"
-      ],
-      images: {start: 1, end: 4}
-    }
-    
   ]
 };

@@ -329,7 +329,7 @@ const buildCalendarHref = (event) => {
     "BEGIN:VCALENDAR", "VERSION:2.0", "BEGIN:VEVENT",
     `DTSTART;VALUE=DATE:${compactDate}`, `DTEND;VALUE=DATE:${end}`,
     `SUMMARY:${event.title}`, `DESCRIPTION:${event.description || ""}`,
-    `LOCATION:${event.location || temple.address}`, "END:VEVENT", "END:VCALENDAR"
+    `LOCATION:${event.address || temple.address}`, "END:VEVENT", "END:VCALENDAR"
   ].join("\r\n");
   return `data:text/calendar;charset=utf-8,${encodeURIComponent(calendar)}`;
 };
@@ -350,7 +350,7 @@ if (nextEventContainer) {
     const shareText = `${nextEvent.title} · ${date.full}${nextEvent.time ? ` at ${nextEvent.time}` : ""} · ${temple.name}`;
     nextEventContainer.innerHTML = `<article class="next-event reveal">
       <time datetime="${escapeHtml(nextEvent.date)}"><strong>${date.day}</strong><span>${date.month}</span></time>
-      <div class="next-event-copy"><p class="event-meta">${escapeHtml([nextEvent.time, nextEvent.location].filter(Boolean).join(" · "))}</p><h3>${escapeHtml(nextEvent.title)}</h3><p>${escapeHtml(nextEvent.description)}</p></div>
+      <div class="next-event-copy"><p class="event-meta">${escapeHtml([nextEvent.time, nextEvent.address].filter(Boolean).join(" · "))}</p><h3>${escapeHtml(nextEvent.title)}</h3><p>${escapeHtml(nextEvent.description)}</p></div>
       <div class="next-event-actions">
         <a class="button button-primary" href="${detailUrl}">View details</a>
         <a class="button button-secondary" href="${buildCalendarHref(nextEvent)}" download="${escapeHtml(nextEvent.id)}.ics">Add to calendar</a>
@@ -364,7 +364,7 @@ const eventGrid = byId("event-grid");
 if (eventGrid) {
   eventGrid.innerHTML = content.events.map((event, eventIndex) => {
     const date = formatDateParts(event.date);
-    const eventMeta = [event.time, event.location].filter(Boolean).join(" · ");
+    const eventMeta = [event.time, event.address].filter(Boolean).join(" · ");
     const detailUrl = `event-details.html?id=${encodeURIComponent(event.id)}`;
     const detailLines = (Array.isArray(event.details)
       ? event.details

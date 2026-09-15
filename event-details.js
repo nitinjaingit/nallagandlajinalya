@@ -16,6 +16,8 @@ if (selectedEvent) {
     ? `${formatDate(selectedEvent.date)} to ${formatDate(selectedEvent.endDate)}`
     : formatDate(selectedEvent.date);
   const description = selectedEvent.description || selectedEvent.note || "";
+  const eventAddress = selectedEvent.address || content.temple.address;
+  const eventMapUrl = selectedEvent.mapUrl || content.temple.directionsUrl;
   const images = window.getEventImages(selectedEvent);
   const canonicalUrl = `https://njj.org/event-details.html?id=${encodeURIComponent(selectedEvent.id)}`;
   const imageUrl = images[0]?.src
@@ -45,8 +47,9 @@ if (selectedEvent) {
     url: canonicalUrl,
     location: {
       "@type": "Place",
-      name: selectedEvent.location || content.temple.name,
-      address: content.temple.address
+      name: eventAddress,
+      address: eventAddress,
+      url: eventMapUrl
     },
     organizer: {
       "@type": "Organization",
@@ -69,18 +72,18 @@ if (selectedEvent) {
     "BEGIN:VCALENDAR", "VERSION:2.0", "BEGIN:VEVENT",
     `DTSTART;VALUE=DATE:${compactDate}`, `DTEND;VALUE=DATE:${compactEnd}`,
     `SUMMARY:${selectedEvent.title}`, `DESCRIPTION:${description}`,
-    `LOCATION:${selectedEvent.location || content.temple.address}`, "END:VEVENT", "END:VCALENDAR"
+    `LOCATION:${eventAddress}`, "END:VEVENT", "END:VCALENDAR"
   ].join("\r\n");
   const calendarLink = document.getElementById("event-calendar-link");
   calendarLink.href = `data:text/calendar;charset=utf-8,${encodeURIComponent(calendar)}`;
   calendarLink.download = `${selectedEvent.id}.ics`;
   document.getElementById("event-share-link").href = `https://wa.me/?text=${encodeURIComponent(`${selectedEvent.title} · ${dateText}${selectedEvent.time ? ` at ${selectedEvent.time}` : ""} · ${content.temple.name}`)}`;
-  document.getElementById("event-directions-link").href = content.temple.directionsUrl;
+  document.getElementById("event-directions-link").href = eventMapUrl;
 
   const facts = [
     ["Date", dateText],
     ["Time", selectedEvent.time],
-    ["Location", selectedEvent.location]
+    ["Address", eventAddress]
   ].filter(([, value]) => value);
   const factsList = document.getElementById("event-detail-facts");
   facts.forEach(([label, value]) => {
