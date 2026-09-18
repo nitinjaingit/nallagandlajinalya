@@ -64,19 +64,6 @@ if (selectedEvent) {
   document.getElementById("event-detail-content").hidden = false;
   document.getElementById("event-detail-actions").hidden = isHistoricalEvent;
 
-  const compactDate = selectedEvent.date.replaceAll("-", "");
-  const calendarEnd = new Date(`${selectedEvent.endDate || selectedEvent.date}T12:00:00`);
-  calendarEnd.setDate(calendarEnd.getDate() + 1);
-  const compactEnd = `${calendarEnd.getFullYear()}${String(calendarEnd.getMonth() + 1).padStart(2, "0")}${String(calendarEnd.getDate()).padStart(2, "0")}`;
-  const calendar = [
-    "BEGIN:VCALENDAR", "VERSION:2.0", "BEGIN:VEVENT",
-    `DTSTART;VALUE=DATE:${compactDate}`, `DTEND;VALUE=DATE:${compactEnd}`,
-    `SUMMARY:${selectedEvent.title}`, `DESCRIPTION:${description}`,
-    `LOCATION:${eventAddress}`, "END:VEVENT", "END:VCALENDAR"
-  ].join("\r\n");
-  const calendarLink = document.getElementById("event-calendar-link");
-  calendarLink.href = `data:text/calendar;charset=utf-8,${encodeURIComponent(calendar)}`;
-  calendarLink.download = `${selectedEvent.id}.ics`;
   document.getElementById("event-share-link").href = `https://wa.me/?text=${encodeURIComponent(`${selectedEvent.title} · ${dateText}${selectedEvent.time ? ` at ${selectedEvent.time}` : ""} · ${content.temple.name}`)}`;
   document.getElementById("event-directions-link").href = eventMapUrl;
 

@@ -320,20 +320,6 @@ const formatDateParts = (dateString) => {
   };
 };
 
-const buildCalendarHref = (event) => {
-  const compactDate = event.date.replaceAll("-", "");
-  const calendarEnd = new Date(`${event.endDate || event.date}T12:00:00`);
-  calendarEnd.setDate(calendarEnd.getDate() + 1);
-  const end = `${calendarEnd.getFullYear()}${String(calendarEnd.getMonth() + 1).padStart(2, "0")}${String(calendarEnd.getDate()).padStart(2, "0")}`;
-  const calendar = [
-    "BEGIN:VCALENDAR", "VERSION:2.0", "BEGIN:VEVENT",
-    `DTSTART;VALUE=DATE:${compactDate}`, `DTEND;VALUE=DATE:${end}`,
-    `SUMMARY:${event.title}`, `DESCRIPTION:${event.description || ""}`,
-    `LOCATION:${event.address || temple.address}`, "END:VEVENT", "END:VCALENDAR"
-  ].join("\r\n");
-  return `data:text/calendar;charset=utf-8,${encodeURIComponent(calendar)}`;
-};
-
 const nextEventContainer = byId("next-event");
 if (nextEventContainer) {
   const today = new Date();
@@ -353,7 +339,7 @@ if (nextEventContainer) {
       <div class="next-event-copy"><p class="event-meta">${escapeHtml([nextEvent.time, nextEvent.address].filter(Boolean).join(" · "))}</p><h3>${escapeHtml(nextEvent.title)}</h3><p>${escapeHtml(nextEvent.description)}</p></div>
       <div class="next-event-actions">
         <a class="button button-primary" href="${detailUrl}">View details</a>
-        <a class="button button-secondary" href="${buildCalendarHref(nextEvent)}" download="${escapeHtml(nextEvent.id)}.ics">Add to calendar</a>
+        <a class="button button-secondary" href="${escapeHtml(nextEvent.mapUrl || temple.directionsUrl)}" target="_blank" rel="noreferrer">Get directions</a>
         <a class="text-link" href="https://wa.me/?text=${encodeURIComponent(shareText)}" target="_blank" rel="noreferrer">Share on WhatsApp</a>
       </div>
     </article>`;
@@ -426,11 +412,41 @@ if (eventGrid) {
 
 const historyList = byId("history-list");
 if (historyList) {
-  historyList.innerHTML = content.eventHistory.map((event) => {
-    const date = formatDateParts(event.date);
-    const description = event.description || event.note || "";
-    return `<article><time datetime="${event.date}">${date.full}</time><div><h4>${event.title}</h4><p>${description}</p><a class="text-link" href="event-details.html?id=${encodeURIComponent(event.id)}">View event</a></div></article>`;
-  }).join("");
+  const eventsPerPage = 5;
+  const historyEvents = [...content.eventHistory]
+    .sort((first, second) => second.date.localeCompare(first.date));
+  const pageCount = Math.ceil(historyEvents.length / eventsPerPage);
+  const pagination = byId("history-pagination");
+  const previousButton = byId("history-previous");
+  const nextButton = byId("history-next");
+  const pageStatus = byId("history-page-status");
+  let currentPage = 0;
+
+  const renderHistoryPage = () => {
+    const firstEventIndex = currentPage * eventsPerPage;
+    historyList.innerHTML = historyEvents
+      .slice(firstEventIndex, firstEventIndex + eventsPerPage)
+      .map((event) => {
+        const date = formatDateParts(event.date);
+        const description = event.description || event.note || "";
+        return `<article><time datetime="${event.date}">${date.full}</time><div><h4>${event.title}</h4><p>${description}</p><a class="text-link" href="event-details.html?id=${encodeURIComponent(event.id)}">View event</a></div></article>`;
+      }).join("");
+
+    if (pagination) pagination.hidden = pageCount <= 1;
+    if (previousButton) previousButton.disabled = currentPage === 0;
+    if (nextButton) nextButton.disabled = currentPage >= pageCount - 1;
+    if (pageStatus) pageStatus.textContent = `Page ${currentPage + 1} of ${pageCount}`;
+  };
+
+  renderHistoryPage();
+
+  pagination?.addEventListener("click", (event) => {
+    if (event.target.closest("#history-previous") && currentPage > 0) currentPage -= 1;
+    else if (event.target.closest("#history-next") && currentPage < pageCount - 1) currentPage += 1;
+    else return;
+    renderHistoryPage();
+    historyList.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
 }
 
 const gallery = byId("gallery-grid");
@@ -461,6 +477,96 @@ if (gallery) {
 
   renderGalleryPage();
 
+  const allView = byId("gallery-all-view");
+  const treeView = byId("gallery-tree-view");
+  const tree = byId("gallery-tree");
+  const filteredGallery = byId("gallery-filtered-grid");
+  const selectionTitle = byId("gallery-selection-title");
+  const selectionCount = byId("gallery-selection-count");
+  const helpText = byId("gallery-help");
+  let selectedGroupImageIndexes = [];
+  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const monthLookup = Object.fromEntries(monthNames.map((month, index) => [month.slice(0, 3).toLowerCase(), index]));
+  const datedGroups = new Map();
+
+  galleryImages.forEach((image, imageIndex) => {
+    const dateParts = String(image.date || "").split("-");
+    const year = /^\d{4}$/.test(dateParts[2] || "") ? dateParts[2] : "Other";
+    const monthIndex = monthLookup[String(dateParts[1] || "").slice(0, 3).toLowerCase()];
+    const month = monthIndex === undefined ? "Undated" : monthNames[monthIndex];
+    const caption = image.caption || "Gallery photos";
+    const key = `${year}|${month}|${caption}`;
+    if (!datedGroups.has(key)) datedGroups.set(key, { key, year, month, monthIndex: monthIndex ?? -1, caption, imageIndexes: [] });
+    datedGroups.get(key).imageIndexes.push(imageIndex);
+  });
+
+  const groups = [...datedGroups.values()].sort((left, right) => {
+    const yearDifference = (Number(right.year) || 0) - (Number(left.year) || 0);
+    return yearDifference || right.monthIndex - left.monthIndex || left.caption.localeCompare(right.caption);
+  });
+
+  const years = new Map();
+  groups.forEach((group, groupIndex) => {
+    if (!years.has(group.year)) years.set(group.year, new Map());
+    const months = years.get(group.year);
+    if (!months.has(group.month)) months.set(group.month, []);
+    months.get(group.month).push({ ...group, groupIndex });
+  });
+
+  if (tree) {
+    tree.innerHTML = [...years.entries()].map(([year, months], yearIndex) => `
+      <details${yearIndex === 0 ? " open" : ""}>
+        <summary>${escapeHtml(year)}</summary>
+        ${[...months.entries()].map(([month, monthGroups], monthIndex) => `
+          <details${yearIndex === 0 && monthIndex === 0 ? " open" : ""}>
+            <summary>${escapeHtml(month)}</summary>
+            <div class="gallery-tree-items">
+              ${monthGroups.map((group) => `<button class="gallery-tree-button" type="button" data-group-index="${group.groupIndex}">${escapeHtml(group.caption)} (${group.imageIndexes.length})</button>`).join("")}
+            </div>
+          </details>`).join("")}
+      </details>`).join("");
+  }
+
+  const renderSelectedGroup = (groupIndex) => {
+    const group = groups[groupIndex];
+    if (!group || !filteredGallery) return;
+    selectedGroupImageIndexes = group.imageIndexes;
+    const selectedImages = group.imageIndexes.map((imageIndex) => ({ image: galleryImages[imageIndex], imageIndex }));
+    filteredGallery.innerHTML = selectedImages.map(({ image, imageIndex }) => `
+      <button class="gallery-item reveal is-visible" type="button" data-index="${imageIndex}" aria-label="Open ${escapeHtml(image.caption)}">
+        <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt)}" loading="lazy" />
+      </button>`).join("");
+    selectionTitle.textContent = group.caption;
+    selectionCount.textContent = `${selectedImages.length} ${selectedImages.length === 1 ? "photo" : "photos"} · ${group.month} ${group.year}`;
+    tree.querySelectorAll(".gallery-tree-button").forEach((button) => {
+      const selected = Number(button.dataset.groupIndex) === groupIndex;
+      button.classList.toggle("is-active", selected);
+      button.setAttribute("aria-current", selected ? "true" : "false");
+    });
+  };
+
+  if (groups.length) renderSelectedGroup(0);
+
+  tree?.addEventListener("click", (event) => {
+    const button = event.target.closest(".gallery-tree-button");
+    if (button) renderSelectedGroup(Number(button.dataset.groupIndex));
+  });
+
+  document.querySelectorAll("[data-gallery-view]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const showTree = button.dataset.galleryView === "tree";
+      allView.hidden = showTree;
+      treeView.hidden = !showTree;
+      if (helpText) helpText.textContent = showTree ? "Choose a caption from the date tree to view its photos." : "Choose any photo to view it at full size.";
+      document.querySelectorAll("[data-gallery-view]").forEach((viewButton) => {
+        const selected = viewButton === button;
+        viewButton.classList.toggle("is-active", selected);
+        viewButton.setAttribute("aria-pressed", String(selected));
+      });
+      if (showTree && groups.length && !tree.querySelector(".gallery-tree-button.is-active")) renderSelectedGroup(0);
+    });
+  });
+
   pagination?.addEventListener("click", (event) => {
     if (event.target.closest("#gallery-previous") && currentPage > 0) currentPage -= 1;
     else if (event.target.closest("#gallery-next") && currentPage < pageCount - 1) currentPage += 1;
@@ -471,16 +577,46 @@ if (gallery) {
 
   const dialog = byId("image-dialog");
   if (dialog) {
-    gallery.addEventListener("click", (event) => {
+    const dialogImage = dialog.querySelector("img");
+    const dialogCaption = dialog.querySelector("p");
+    const previousImageButton = dialog.querySelector(".dialog-image-previous");
+    const nextImageButton = dialog.querySelector(".dialog-image-next");
+    let dialogImageIndexes = [];
+    let dialogPosition = 0;
+
+    const showDialogImage = () => {
+      const image = galleryImages[dialogImageIndexes[dialogPosition]];
+      if (!image) return;
+      dialogImage.src = image.src;
+      dialogImage.alt = image.alt;
+      dialogCaption.textContent = `${image.caption} · ${dialogPosition + 1} of ${dialogImageIndexes.length}`;
+      previousImageButton.hidden = dialogImageIndexes.length < 2;
+      nextImageButton.hidden = dialogImageIndexes.length < 2;
+    };
+
+    const moveDialogImage = (direction) => {
+      dialogPosition = (dialogPosition + direction + dialogImageIndexes.length) % dialogImageIndexes.length;
+      showDialogImage();
+    };
+
+    const openGalleryImage = (event) => {
       const item = event.target.closest(".gallery-item");
       if (!item) return;
-      const image = galleryImages[Number(item.dataset.index)];
-      dialog.querySelector("img").src = image.src;
-      dialog.querySelector("img").alt = image.alt;
-      dialog.querySelector("p").textContent = image.caption;
+      const imageIndex = Number(item.dataset.index);
+      dialogImageIndexes = event.currentTarget === filteredGallery ? [...selectedGroupImageIndexes] : galleryImages.map((_, index) => index);
+      dialogPosition = Math.max(0, dialogImageIndexes.indexOf(imageIndex));
+      showDialogImage();
       dialog.showModal();
-    });
+    };
+    gallery.addEventListener("click", openGalleryImage);
+    filteredGallery?.addEventListener("click", openGalleryImage);
+    previousImageButton.addEventListener("click", () => moveDialogImage(-1));
+    nextImageButton.addEventListener("click", () => moveDialogImage(1));
     dialog.querySelector(".dialog-close").addEventListener("click", () => dialog.close());
+    dialog.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") moveDialogImage(-1);
+      if (event.key === "ArrowRight") moveDialogImage(1);
+    });
     dialog.addEventListener("click", (event) => {
       if (event.target === dialog) dialog.close();
     });

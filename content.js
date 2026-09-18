@@ -4,7 +4,7 @@ window.TEMPLE_CONTENT = {
     name: "Shri Digambar Jinalaya",
     fullName: "Shri Digambar Jinalaya, Nallagandla, Hyderabad",
     welcome: "A serene home for prayer, reflection, learning, and seva. Join us for daily darshan and community celebrations.",
-    about: "Rooted in the timeless Jain principles of non-violence, truth, and compassion, our mandir brings generations together through worship, pathshala, festivals, and service. We welcome every visitor with warmth and respect.",
+    about: "Jinalaya is estabished on <date>. Rooted in the timeless Jain principles of non-violence, truth, and compassion, our mandir brings generations together through worship, pathshala, festivals, and service. We welcome every visitor with warmth and respect.",
     heroImage: "assets/images/Home/Vedi-transparent-clean.png?v=3",
     heroImageAlt: "Vedi at Shree Digambar Jinalaya, Nallagandla, Hyderabad",
     openingTime: "6:30 AM - 11:30 AM",

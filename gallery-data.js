@@ -5,11 +5,45 @@
 window.TEMPLE_GALLERY_DATA = [
   {
     baseUrl: "assets/images/Gallery",
+    start: 0,
+    end: 0,
+    padding: 2,
+    alt: "वाद-विवाद प्रतियोगिता on 18-Sept-2026",
+    caption: "वाद-विवाद प्रतियोगिता",
+    date: "18-Sept-2026",
+    active: true,
+    notInUse: []
+  },
+  {
+    baseUrl: "assets/images/Gallery",
+    start: 36,
+    end: 41,
+    padding: 2,
+    alt: "कौन बनेगा ज्ञानी on 17-Sept-2026",
+    caption: "कौन बनेगा ज्ञानी",
+    date: "17-Sept-2026",
+    active: true,
+    notInUse: []
+  },
+  {
+    baseUrl: "assets/images/Gallery",
+    start: 16,
+    end: 35,
+    padding: 2,
+    alt: "Jains got talent on 16-Sept-2026",
+    caption: "Jains got talent",
+    date: "16-Sept-2026",
+    active: true,
+    notInUse: []
+  },
+  {
+    baseUrl: "assets/images/Gallery",
     start: 11,
     end: 13,
     padding: 2,
     alt: "Shobha yatra at Shree Digambar Jinalaya",
-    caption: "Shobha yatra on 19-March-2026",
+    caption: "Shobha yatra",
+    date: "19-March-2026",
     active: true,
     notInUse: []
   },
@@ -20,6 +54,7 @@ window.TEMPLE_GALLERY_DATA = [
     padding: 2,
     alt: "Pathshala at Shree Digambar Jinalaya",
     caption: "Pathshala for  kids",
+    date: "6-Sept-2026",
     active: true,
     notInUse: []
   },
@@ -30,6 +65,7 @@ window.TEMPLE_GALLERY_DATA = [
     padding: 2,
     alt: "Pooja gyan at Shree Digambar Jinalaya",
     caption: "Pooja gyan to kids",
+    date: "14-Sept-2026",
     active: true,
     notInUse: []
   },
@@ -39,7 +75,8 @@ window.TEMPLE_GALLERY_DATA = [
     end: 10,
     padding: 2,
     alt: "Mata ji vihaar",
-    caption: "Mata ji vihaar on 20-July-2026",
+    date: "20-July-2026",
+    caption: "Mata ji vihaar",
     active: true,
     notInUse: []
   },
@@ -49,7 +86,8 @@ window.TEMPLE_GALLERY_DATA = [
     end: 5,
     padding: 2,
     alt: "Pratima ji manjan at Shree Digambar Jinalaya",
-    caption: "Pratima ji manjan on 13-Sept-2026",
+    date: "13-Sept-2026",
+    caption: "Pratima ji manjan",
     active: true,
     notInUse: []
   }
@@ -71,6 +109,7 @@ window.TEMPLE_GALLERY = window.TEMPLE_GALLERY_DATA.flatMap((range) => {
       src: `${baseUrl}/${String(imageNumber).padStart(padding, "0")}.${extension}`,
       alt: range.alt,
       caption: range.caption,
+      date: range.date,
       active: range.active !== false
     }));
 });

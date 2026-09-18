@@ -18,7 +18,7 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 	<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Hind:wght@400;500;600&display=swap" rel="stylesheet" />
-	<link rel="stylesheet" href="styles.css?v=5" />
+	<link rel="stylesheet" href="styles.css?v=6" />
 	<script>
 		(() => {
 			const param = new URLSearchParams(window.location.search).get("scoutTheme");
@@ -40,25 +40,43 @@
 
 		<section class="section gallery-section">
 			<div class="gallery-toolbar">
-				<p>Choose any photo to view it at full size.</p>
+				<!--<p id="gallery-help">Choose a caption from the date tree to view its photos.</p>-->
+				<div class="gallery-view-switch" role="group" aria-label="Gallery view">
+					<button class="gallery-view-button is-active" type="button" data-gallery-view="tree" aria-pressed="true">Browse by date</button>
+					<button class="gallery-view-button" type="button" data-gallery-view="grid" aria-pressed="false">All photos</button>
+				</div>
 			</div>
-			<div class="gallery-grid" id="gallery-grid"></div>
-			<nav class="gallery-pagination" id="gallery-pagination" aria-label="Gallery pages" hidden>
-				<button class="gallery-page-button" id="gallery-previous" type="button" aria-label="Previous gallery page">‹</button>
-				<p id="gallery-page-status" aria-live="polite"></p>
-				<button class="gallery-page-button" id="gallery-next" type="button" aria-label="Next gallery page">›</button>
-			</nav>
+			<div id="gallery-all-view" hidden>
+				<div class="gallery-grid" id="gallery-grid"></div>
+				<nav class="gallery-pagination" id="gallery-pagination" aria-label="Gallery pages" hidden>
+					<button class="gallery-page-button" id="gallery-previous" type="button" aria-label="Previous gallery page">‹</button>
+					<p id="gallery-page-status" aria-live="polite"></p>
+					<button class="gallery-page-button" id="gallery-next" type="button" aria-label="Next gallery page">›</button>
+				</nav>
+			</div>
+			<div class="gallery-browser" id="gallery-tree-view">
+				<nav class="gallery-tree" id="gallery-tree" aria-label="Gallery by date"></nav>
+				<div class="gallery-results">
+					<div class="gallery-results-heading">
+						<h2 id="gallery-selection-title">Select a gallery</h2>
+						<p id="gallery-selection-count" aria-live="polite"></p>
+					</div>
+					<div class="gallery-grid" id="gallery-filtered-grid"></div>
+				</div>
+			</div>
 		</section>
 
 		<dialog id="image-dialog" aria-label="Gallery image preview">
 			<button class="dialog-close" type="button" aria-label="Close image preview">×</button>
+			<button class="dialog-image-nav dialog-image-previous" type="button" aria-label="Previous image">‹</button>
 			<img src="" alt="" />
+			<button class="dialog-image-nav dialog-image-next" type="button" aria-label="Next image">›</button>
 			<p></p>
 		</dialog>
 	</main>
 	<script src="content.js?v=5"></script>
 	<script src="shared-layout.js?v=6"></script>
-	<script src="gallery-data.js?v=2"></script>
-	<script src="app.js?v=2"></script>
+	<script src="gallery-data.js?v=3"></script>
+	<script src="app.js?v=5"></script>
 </body>
 </html>
