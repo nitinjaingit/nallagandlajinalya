@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="description" content="View daily and special community bids from Shree Digambar Jinalaya, Nallagandla, Hyderabad." />
+	<meta name="robots" content="index, follow" />
+	<link rel="icon" type="image/png" href="../assets/images/Home/Logo.png" />
+	<title>Community Bids | Shree Digambar Jinalaya</title>
+	<script>
+		(() => {
+			const param = new URLSearchParams(window.location.search).get("scoutTheme");
+			const theme =
+				param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+			document.documentElement.setAttribute("data-theme", theme);
+		})();
+	</script>
+	<style>
+		:root {
+			color-scheme: light;
+			--cp-bg: #f7f4ef;
+			--cp-bg-elevated: #fcfbf8;
+			--cp-surface: #ffffff;
+			--cp-surface-soft: #f5f5f5;
+			--cp-border: #dedede;
+			--cp-border-strong: #919191;
+			--cp-text: #242424;
+			--cp-text-muted: #5c5c5c;
+			--cp-text-soft: #6f6f6f;
+			--cp-accent: #b11f4b;
+			--cp-accent-hover: #9a1a41;
+			--cp-accent-soft: rgba(177, 31, 75, 0.08);
+			--cp-accent-fg: #ffffff;
+			--cp-success: #16a34a;
+			--cp-danger: #dc2626;
+			--cp-warning: #f59e0b;
+			--cp-link: #0078d4;
+			--cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+			--cp-overlay: rgba(255, 255, 255, 0.8);
+			--cp-panel: rgba(255, 255, 255, 0.86);
+			--cp-panel-strong: rgba(255, 255, 255, 0.96);
+			--cp-sheen: rgba(255, 255, 255, 0.55);
+			--cp-highlight: rgba(177, 31, 75, 0.12);
+		}
+		html[data-theme="dark"] {
+			color-scheme: dark;
+			--cp-bg: #3d3b3a;
+			--cp-bg-elevated: #343231;
+			--cp-surface: #292929;
+			--cp-surface-soft: #2e2e2e;
+			--cp-border: #474747;
+			--cp-border-strong: #5f5f5f;
+			--cp-text: #dedede;
+			--cp-text-muted: #919191;
+			--cp-text-soft: #b0b0b0;
+			--cp-accent: #fd8ea1;
+			--cp-accent-hover: #fb7b91;
+			--cp-accent-soft: rgba(253, 142, 161, 0.14);
+			--cp-accent-fg: #1a1a1a;
+			--cp-success: #4ade80;
+			--cp-danger: #f87171;
+			--cp-warning: #fbbf24;
+			--cp-link: #4da6ff;
+			--cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+			--cp-overlay: rgba(41, 41, 41, 0.88);
+			--cp-panel: rgba(41, 41, 41, 0.72);
+			--cp-panel-strong: rgba(41, 41, 41, 0.96);
+			--cp-sheen: rgba(255, 255, 255, 0.04);
+			--cp-highlight: rgba(253, 142, 161, 0.12);
+		}
+	</style>
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Hind:wght@400;500;600&display=swap" rel="stylesheet" />
+	<link rel="stylesheet" href="../styles.css?v=5" />
+	<link rel="stylesheet" href="bids.css?v=1" />
+	<script src="bids.js?v=1" defer></script>
+</head>
+<body class="inner-page">
+	<a class="skip-link" href="#main-content">Skip to content</a>
+
+	<header class="site-header" id="top">
+		<div class="header-inner">
+			<a class="brand" href="../index.html" aria-label="Temple home">
+				<img class="brand-mark" src="../assets/images/Home/Logo.png" alt="" aria-hidden="true" />
+				<span><strong>Shree Digambar Jinalaya</strong><small>Nallagandla, Hyderabad</small></span>
+			</a>
+			<button class="menu-button" type="button" aria-expanded="false" aria-controls="primary-nav">
+				<span class="menu-icon" aria-hidden="true"></span><span class="sr-only">Open navigation</span>
+			</button>
+			<nav id="primary-nav" aria-label="Primary navigation">
+				<a href="../index.html">Home</a>
+				<a class="active" href="index.html" aria-current="page">Bids</a>
+				<a href="bidmaster.html">Bid master</a>
+				<a href="../events.html">Events</a>
+				<a href="../gallery.html">Gallery</a>
+				<a href="../visit.html">Visit</a>
+				<a href="../contact.html">Contact</a>
+			</nav>
+		</div>
+	</header>
+
+	<main id="main-content">
+		<header class="page-masthead bid-masthead">
+			<div>
+				<p class="eyebrow">Temple community program</p>
+				<h1>Community bids</h1>
+				<p>Daily seva opportunities and bids for special occasions.</p>
+			</div>
+		</header>
+
+		<section class="section bid-section" aria-labelledby="schedule-heading">
+			<div class="bid-summary" aria-label="Bid summary">
+				<div><span>Available schedules</span><strong id="schedule-count">—</strong></div>
+				<div><span>Today</span><strong id="today-count">—</strong></div>
+				<div><span>Total capacity</span><strong id="capacity-count">—</strong></div>
+			</div>
+
+			<div class="bid-heading">
+				<div><p class="eyebrow">Bid calendar</p><h2 id="schedule-heading">Available bids</h2></div>
+				<div class="bid-controls">
+					<div class="segmented-control" role="group" aria-label="Filter by bid type">
+						<button class="is-selected" type="button" data-type="All" aria-pressed="true">All</button>
+						<button type="button" data-type="Daily" aria-pressed="false">Daily</button>
+						<button type="button" data-type="Special" aria-pressed="false">Special</button>
+					</div>
+					<label class="date-filter">Date <input id="bid-date" type="date" /></label>
+					<button class="clear-filter" id="clear-date" type="button" hidden>Clear date</button>
+				</div>
+			</div>
+
+			<div class="bid-list" id="bid-list" aria-live="polite">
+				<p class="bid-message">Loading bid schedules…</p>
+			</div>
+		</section>
+	</main>
+
+	<footer>
+		<div class="footer-inner">
+			<div class="brand footer-brand">
+				<img class="brand-mark" src="../assets/images/Home/Logo.png" alt="" aria-hidden="true" />
+				<span><strong>Shree Digambar Jinalaya</strong><small>Nallagandla, Hyderabad</small></span>
+			</div>
+			<a href="#top">Back to top ↑</a>
+		</div>
+	</footer>
+</body>
+</html>

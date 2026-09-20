@@ -1,0 +1,4 @@
+BidMasterID,BidName,BidType,StartDate,EndDate,StartingAmountINR,WinnerCapacity,DisplayOrder,IsActive,Status,Description
+BM-001,Kalash,Daily,2026-09-21,2026-09-30,2100,4,1,Yes,Published,Regular daily bid with one participant
+BM-002,Shanti Dhara,Daily,2026-09-21,2026-09-30,3100,6,2,Yes,Published,Regular daily bid with up to five participants
+BM-003,Testing,Daily,2026-10-04,2026-10-04,400000,1,1,Yes,Draft,

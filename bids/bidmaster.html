@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="robots" content="noindex, nofollow" />
+	<link rel="icon" type="image/png" href="../assets/images/Home/Logo.png" />
+	<title>Manage Bid Masters | Shree Digambar Jinalaya</title>
+	<script>
+		(() => {
+			const param = new URLSearchParams(window.location.search).get("scoutTheme");
+			const theme = param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+			document.documentElement.setAttribute("data-theme", theme);
+		})();
+	</script>
+	<style>
+		:root {
+			color-scheme: light;
+			--cp-bg: #f7f4ef;
+			--cp-bg-elevated: #fcfbf8;
+			--cp-surface: #ffffff;
+			--cp-surface-soft: #f5f5f5;
+			--cp-border: #dedede;
+			--cp-border-strong: #919191;
+			--cp-text: #242424;
+			--cp-text-muted: #5c5c5c;
+			--cp-text-soft: #6f6f6f;
+			--cp-accent: #b11f4b;
+			--cp-accent-hover: #9a1a41;
+			--cp-accent-soft: rgba(177, 31, 75, 0.08);
+			--cp-accent-fg: #ffffff;
+			--cp-success: #16a34a;
+			--cp-danger: #dc2626;
+			--cp-warning: #f59e0b;
+			--cp-link: #0078d4;
+			--cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+			--cp-overlay: rgba(255, 255, 255, 0.8);
+			--cp-panel: rgba(255, 255, 255, 0.86);
+			--cp-panel-strong: rgba(255, 255, 255, 0.96);
+			--cp-sheen: rgba(255, 255, 255, 0.55);
+			--cp-highlight: rgba(177, 31, 75, 0.12);
+		}
+		html[data-theme="dark"] {
+			color-scheme: dark;
+			--cp-bg: #3d3b3a;
+			--cp-bg-elevated: #343231;
+			--cp-surface: #292929;
+			--cp-surface-soft: #2e2e2e;
+			--cp-border: #474747;
+			--cp-border-strong: #5f5f5f;
+			--cp-text: #dedede;
+			--cp-text-muted: #919191;
+			--cp-text-soft: #b0b0b0;
+			--cp-accent: #fd8ea1;
+			--cp-accent-hover: #fb7b91;
+			--cp-accent-soft: rgba(253, 142, 161, 0.14);
+			--cp-accent-fg: #1a1a1a;
+			--cp-success: #4ade80;
+			--cp-danger: #f87171;
+			--cp-warning: #fbbf24;
+			--cp-link: #4da6ff;
+			--cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+			--cp-overlay: rgba(41, 41, 41, 0.88);
+			--cp-panel: rgba(41, 41, 41, 0.72);
+			--cp-panel-strong: rgba(41, 41, 41, 0.96);
+			--cp-sheen: rgba(255, 255, 255, 0.04);
+			--cp-highlight: rgba(253, 142, 161, 0.12);
+		}
+	</style>
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Hind:wght@400;500;600&display=swap" rel="stylesheet" />
+	<link rel="stylesheet" href="../styles.css?v=5" />
+	<link rel="stylesheet" href="bidmaster.css?v=2" />
+	<script src="bidmaster.js?v=2" defer></script>
+</head>
+<body class="inner-page">
+	<a class="skip-link" href="#main-content">Skip to content</a>
+	<header class="site-header" id="top">
+		<div class="header-inner">
+			<a class="brand" href="../index.html" aria-label="Temple home">
+				<img class="brand-mark" src="../assets/images/Home/Logo.png" alt="" aria-hidden="true" />
+				<span><strong>Shree Digambar Jinalaya</strong><small>Nallagandla, Hyderabad</small></span>
+			</a>
+			<button class="menu-button" type="button" aria-expanded="false" aria-controls="primary-nav">
+				<span class="menu-icon" aria-hidden="true"></span><span class="sr-only">Open navigation</span>
+			</button>
+			<nav id="primary-nav" aria-label="Primary navigation">
+				<a href="index.html">Bid schedule</a>
+				<a class="active" href="bidmaster.html" aria-current="page">Bid master</a>
+				<a href="../index.html">Temple home</a>
+			</nav>
+		</div>
+	</header>
+
+	<main id="main-content">
+		<header class="page-masthead master-masthead">
+			<div>
+				<p class="eyebrow">Temple management</p>
+				<h1>Bid master</h1>
+				<p>Maintain the daily and special bids published to the community schedule.</p>
+			</div>
+		</header>
+
+		<section class="section master-section" aria-labelledby="master-heading">
+			<div class="master-toolbar">
+				<div><h2 id="master-heading">All bid masters</h2><p id="record-count" aria-live="polite">Loading records…</p></div>
+				<div class="master-actions">
+					<button class="button button-primary" id="open-form" type="button">Add bid</button>
+				</div>
+			</div>
+
+			<div class="master-table-wrap">
+				<table class="master-table">
+					<thead><tr id="master-head"></tr></thead>
+					<tbody id="master-body"><tr><td>Loading bid master data…</td></tr></tbody>
+				</table>
+			</div>
+		</section>
+	</main>
+
+	<dialog class="bid-dialog" id="bid-dialog" aria-labelledby="form-heading">
+		<form id="bid-form">
+			<div class="dialog-heading">
+				<div><p class="eyebrow" id="form-eyebrow">New record</p><h2 id="form-heading">Add bid master</h2></div>
+				<button class="dialog-close" id="close-form" type="button" aria-label="Close">×</button>
+			</div>
+			<div class="bid-form-grid">
+				<label>Bid ID<input id="bid-id" name="BidMasterID" type="text" readonly /></label>
+				<label>Bid name<input name="BidName" type="text" required maxlength="100" /></label>
+				<label>Bid type<select id="bid-type" name="BidType" required><option value="Daily">Daily</option><option value="Special">Special</option></select></label>
+				<label>Start date<input id="start-date" name="StartDate" type="date" required /></label>
+				<label>End date<input id="end-date" name="EndDate" type="date" required /></label>
+				<label>Starting amount (INR)<input name="StartingAmountINR" type="number" min="0" step="1" required /></label>
+				<label>Winner capacity<input name="WinnerCapacity" type="number" min="1" step="1" value="1" required /></label>
+				<label>Display order<input name="DisplayOrder" type="number" min="1" step="1" value="1" required /></label>
+				<label>Active<select name="IsActive" required><option value="Yes">Yes</option><option value="No">No</option></select></label>
+				<label>Status<select name="Status" required><option value="Draft">Draft</option><option value="Published">Published</option><option value="Closed">Closed</option><option value="Cancelled">Cancelled</option></select></label>
+				<label class="full-field">Description<textarea name="Description" rows="3" maxlength="300"></textarea></label>
+			</div>
+			<p class="form-error" id="form-error" role="alert"></p>
+			<div class="dialog-actions">
+				<button class="button button-secondary" id="cancel-form" type="button">Cancel</button>
+				<button class="button button-primary" type="submit">Add to master</button>
+			</div>
+		</form>
+	</dialog>
+
+	<footer><div class="footer-inner"><div class="brand footer-brand"><img class="brand-mark" src="../assets/images/Home/Logo.png" alt="" aria-hidden="true" /><span><strong>Shree Digambar Jinalaya</strong><small>Nallagandla, Hyderabad</small></span></div><a href="#top">Back to top ↑</a></div></footer>
+</body>
+</html>
