@@ -491,18 +491,20 @@ if (gallery) {
 
   galleryImages.forEach((image, imageIndex) => {
     const dateParts = String(image.date || "").split("-");
+    const date = String(image.date || "");
     const year = /^\d{4}$/.test(dateParts[2] || "") ? dateParts[2] : "Other";
     const monthIndex = monthLookup[String(dateParts[1] || "").slice(0, 3).toLowerCase()];
     const month = monthIndex === undefined ? "Undated" : monthNames[monthIndex];
+    const day = /^\d{1,2}$/.test(dateParts[0] || "") ? Number(dateParts[0]) : 0;
     const caption = image.caption || "Gallery photos";
-    const key = `${year}|${month}|${caption}`;
-    if (!datedGroups.has(key)) datedGroups.set(key, { key, year, month, monthIndex: monthIndex ?? -1, caption, imageIndexes: [] });
+    const key = `${date}|${caption}`;
+    if (!datedGroups.has(key)) datedGroups.set(key, { key, date, year, month, monthIndex: monthIndex ?? -1, day, caption, imageIndexes: [] });
     datedGroups.get(key).imageIndexes.push(imageIndex);
   });
 
   const groups = [...datedGroups.values()].sort((left, right) => {
     const yearDifference = (Number(right.year) || 0) - (Number(left.year) || 0);
-    return yearDifference || right.monthIndex - left.monthIndex || left.caption.localeCompare(right.caption);
+    return yearDifference || right.monthIndex - left.monthIndex || right.day - left.day || left.caption.localeCompare(right.caption);
   });
 
   const years = new Map();
@@ -537,7 +539,7 @@ if (gallery) {
         <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt)}" loading="lazy" />
       </button>`).join("");
     selectionTitle.textContent = group.caption;
-    selectionCount.textContent = `${selectedImages.length} ${selectedImages.length === 1 ? "photo" : "photos"} · ${group.month} ${group.year}`;
+    selectionCount.textContent = `${selectedImages.length} ${selectedImages.length === 1 ? "photo" : "photos"} · ${group.date || "Undated"}`;
     tree.querySelectorAll(".gallery-tree-button").forEach((button) => {
       const selected = Number(button.dataset.groupIndex) === groupIndex;
       button.classList.toggle("is-active", selected);

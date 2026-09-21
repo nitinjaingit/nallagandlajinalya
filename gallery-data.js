@@ -5,12 +5,23 @@
 window.TEMPLE_GALLERY_DATA = [
   {
     baseUrl: "assets/images/Gallery",
-    start: 0,
-    end: 0,
+    start: 49,
+    end: 77,
     padding: 2,
-    alt: "वाद-विवाद प्रतियोगिता on 18-Sept-2026",
-    caption: "वाद-विवाद प्रतियोगिता",
-    date: "18-Sept-2026",
+    alt: "Prakshal on 20-Sept-2026",
+    caption: "Prakshal",
+    date: "20-Sept-2026",
+    active: true,
+    notInUse: []
+  },
+  {
+    baseUrl: "assets/images/Gallery",
+    start: 42,
+    end: 48,
+    padding: 2,
+    alt: "Maha aarti on 19-Sept-2026",
+    caption: "Maha aarti",
+    date: "19-Sept-2026",
     active: true,
     notInUse: []
   },
