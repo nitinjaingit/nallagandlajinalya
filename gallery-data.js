@@ -5,8 +5,19 @@
 window.TEMPLE_GALLERY_DATA = [
   {
     baseUrl: "assets/images/Gallery",
+    start: 81,
+    end: 105,
+    padding: 2,
+    alt: "Anant chaturdashi on 27-Sept-2026",
+    caption: "Anant chaturdashi",
+    date: "27-Sept-2026",
+    active: true,
+    notInUse: []
+  },
+  {
+    baseUrl: "assets/images/Gallery",
     start: 49,
-    end: 77,
+    end: 80,
     padding: 2,
     alt: "Prakshal on 20-Sept-2026",
     caption: "Prakshal",
