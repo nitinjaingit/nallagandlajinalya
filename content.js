@@ -77,7 +77,7 @@ window.TEMPLE_CONTENT = {
       details: [
         "From Jinalaya"
       ],
-      images: {start:1 , end: 22 }
+      images: {start:1 , end: 23 }
     }
   ]
 };
