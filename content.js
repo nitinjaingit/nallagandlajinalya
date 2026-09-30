@@ -59,7 +59,12 @@ window.TEMPLE_CONTENT = {
       address: "Aparna zenith club house, Nallagandla, Hyderabad - 500046",
       mapUrl: "https://www.google.com/maps/search/?api=1&query=Aparna%20zenith%20club%20house%2C%20Nallagandla%2C%20Hyderabad%20-%20500046",
       details: [
-        "Kshamavaani Program", "Lunch"
+        "9:30 AM 🪔 Deep Prajwalan / दीप प्रज्ज्वलन",
+        "9:40 AM 🎭 Sanskritik Prastuti – 1 / सांस्कृतिक प्रस्तुति – 1",
+        "10:10 AM 🏅 Samman Samaroh / सम्मान समारोह",
+        "10:30 AM 🎭 Sanskritik Prastuti – 2 / सांस्कृतिक प्रस्तुति – 2",
+        "11:30 AM 🛕 Mandir Ji Karya Yojana / मंदिरजी कार्य योजना",
+        "12:30 PM 🍽️ Vatsalya Bhoj / वात्सल्य भोज"
       ],
       images: {start: 1, end: 1}
     }
